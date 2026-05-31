@@ -3,15 +3,17 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 
-# Model file — too large for GitHub (84MB)
-# Use Git LFS or download separately
-timbre_model.pkl
-
 # Feature cache (auto-generated)
 features_cache/
 
-# Dataset (training data — not part of the demo)
+# Dataset — too large for GitHub (3.4GB, 6705 files)
+# Download training data separately: https://www.upf.edu/web/mtg/irmas
 dataset/
+
+# Local reference files (kept on disk, not in repo)
+CLAUDE.md
+README_zh.md
+github/
 
 # IDE / editor
 .idea/
