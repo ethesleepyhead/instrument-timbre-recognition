@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>乐器音色识别 — ML Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page-shell">
+
+    <!-- ================================================================ -->
+    <!--  Hero / 项目说明                                                  -->
+    <!-- ================================================================ -->
+    <header class="hero">
+      <p class="eyebrow">Machine Learning Demo</p>
+      <h1>乐器音色识别</h1>
+
+      <div class="tech-tags">
+        <span>Python</span>
+        <span>librosa</span>
+        <span>scikit-learn</span>
+        <span>Random Forest</span>
+        <span>Flask</span>
+      </div>
+    </header>
+
+    <!-- ================================================================ -->
+    <!--  上传区域                                                        -->
+    <!-- ================================================================ -->
+    <section class="card upload-card">
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-icon">&#x1F3B5;</div>
+        <div class="drop-zone-copy">
+          <strong>拖拽音频文件到这里</strong>
+          <span>或点击选择文件 &middot; 支持 WAV / MP3 / FLAC / OGG / M4A</span>
+        </div>
+        <input type="file" id="fileInput" accept="audio/*" hidden>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!--  播放 & 分析控制栏 (上传后显示)                                  -->
+    <!-- ================================================================ -->
+    <section class="card control-card" id="controls">
+      <div class="file-meta">
+        <p id="fileName" class="file-name"></p>
+        <p id="statusText" class="status-text">文件已加载，可以试听或开始识别。</p>
+      </div>
+
+      <div class="button-row">
+        <button id="playBtn" type="button">&#x25B6; 播放</button>
+        <button id="analyzeBtn" type="button" class="primary">开始识别</button>
+      </div>
+
+      <div id="waveform"></div>
+
+      <div class="time-row">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!--  状态提示                                                       -->
+    <!-- ================================================================ -->
+    <div id="loading" class="loading-banner">正在提取音频特征并分析，请稍候...</div>
+    <div id="errorBox" class="error-banner" hidden></div>
+
+    <!-- ================================================================ -->
+    <!--  识别结果                                                        -->
+    <!-- ================================================================ -->
+    <section class="card result-card" id="summaryCard" hidden>
+      <p class="summary-label">Top 预测</p>
+      <div class="summary-main">
+        <strong id="topLabel">-</strong>
+        <span id="topConfidence">0%</span>
+      </div>
+      <p id="modelHint" class="model-hint"></p>
+    </section>
+
+    <div id="result" class="result-list"></div>
+
+    <!-- ================================================================ -->
+    <!--  乐器时间轴                                                     -->
+    <!-- ================================================================ -->
+    <section class="card timeline-card" id="timelineCard" hidden>
+      <div class="timeline-header">
+        <h3>乐器时间轴</h3>
+        <p id="timelineDesc">
+          将音频逐段分析，展示不同时间段各乐器的预测概率。颜色越深表示置信度越高。
+        </p>
+      </div>
+      <div class="timeline-ticks" id="timelineTicks"></div>
+      <div class="timeline-body" id="timelineBody"></div>
+      <div class="timeline-hint" id="timelineHint">
+        同一时间段可能检测到多个乐器，各行独立显示。
+      </div>
+    </section>
+    <div id="timelineError" class="error-banner" hidden></div>
+    <div id="timelineLoading" class="loading-banner">正在分析时间轴...</div>
+
+    <!-- ================================================================ -->
+    <!--  底部说明                                                        -->
+    <!-- ================================================================ -->
+    <footer class="footer">
+      <p><strong>关于这个项目</strong></p>
+      <p>
+        这是一个机器学习入门展示项目。模型使用
+        <code>librosa</code> 从音频中提取 MFCC、色度、频谱质心、频谱带宽等特征，
+        再用 <code>scikit-learn</code> 的随机森林（Random Forest）进行分类训练。
+        前端通过 Flask 后端调用模型，实时返回每个乐器类别的预测概率。
+      </p>
+      <p>
+        项目适用于学习 ML 完整流程（数据准备 → 特征工程 → 模型训练 → Web 部署），
+        而非追求工业级识别精度。
+      </p>
+    </footer>
+
+  </main>
+
+  <script src="https://unpkg.com/wavesurfer.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
