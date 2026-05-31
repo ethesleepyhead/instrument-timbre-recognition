@@ -38,10 +38,10 @@ audio-app/
   features.py         # 共享特征提取逻辑与常量配置
   timbre_api.py       # Flask 应用、静态文件服务、推理接口
   train_model.py      # 模型训练脚本
-  timbre_model.pkl    # 训练好的模型文件
+  timbre_model.pkl    # 训练好的模型文件（仓库已包含）
   run.bat             # Windows 启动脚本
-  dataset/            # 按类别组织的训练音频
-  features_cache/     # 训练阶段缓存的特征文件
+  dataset/            # 训练数据（需手动下载，见下方说明）
+  features_cache/     # 训练阶段缓存的特征文件（自动生成）
   README.md
 ```
 
@@ -232,20 +232,41 @@ http://127.0.0.1:5000
 pip install flask flask-cors joblib librosa numpy scikit-learn
 ```
 
-## 截图位置
+## 数据集
 
-建议将截图放在：
+本项目使用 [IRMAS](https://www.upf.edu/web/mtg/irmas)（Instrument Recognition in Musical Audio Signals）数据集进行训练。
 
-```text
-github/screenshots/
+### 获取数据集
+
+1. 访问 [IRMAS 数据集页面](https://www.upf.edu/web/mtg/irmas)
+2. 下载 `IRMAS-TrainingData.zip`，解压后按乐器类别放入 `dataset/` 目录
+
+### 目录结构
+
+```
+dataset/
+  cel/      # Cello — 大提琴
+  cla/      # Clarinet — 单簧管
+  flu/      # Flute — 长笛
+  gac/      # Guitar (Acoustic) — 原声吉他
+  gel/      # Guitar (Electric) — 电吉他
+  org/      # Organ — 管风琴
+  pia/      # Piano — 钢琴
+  sax/      # Saxophone — 萨克斯
+  tru/      # Trumpet — 小号
+  vio/      # Violin — 小提琴
+  voi/      # Voice — 人声
 ```
 
-预留路径：
+### 重新训练
 
-- `github/screenshots/home.png`
-- `github/screenshots/result.png`
-- `github/screenshots/timeline.png`
-- `github/screenshots/training.png`
+```bash
+# 仓库已包含预训练模型，可直接使用
+# 如需自行训练，先放置数据集再运行：
+python train_model.py --quick
+```
+
+> 训练完成后会生成 `features_cache/` 和新的 `timbre_model.pkl`。
 
 ## 说明
 
