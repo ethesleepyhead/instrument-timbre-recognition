@@ -1,6 +1,114 @@
-# 乐器音色识别 Web Demo
+# 乐器音色识别 · Instrument Timbre Recognition
 
-一个轻量级音频机器学习项目，用于乐器分类与时间轴可视化。
+[English](#english) | [中文](#中文)
+
+A lightweight machine learning demo for musical instrument classification with timeline visualization.  
+一个轻量级乐器分类机器学习 Demo，支持音频上传、实时推理和时间轴可视化。
+
+---
+
+## Screenshots · 截图
+
+> 📸 *Add screenshots here by dragging images into a GitHub issue, then pasting the link below.*
+
+| | |
+|---|---|
+| **Home Page · 主页** | **Result · 识别结果** |
+| ![home](https://via.placeholder.com/640x360/0f172a/6366f1?text=Home+Page) | ![result](https://via.placeholder.com/640x360/0f172a/0d9488?text=Recognition+Result) |
+| **Timeline · 时间轴** | **Training · 训练过程** |
+| ![timeline](https://via.placeholder.com/640x360/0f172a/d97706?text=Instrument+Timeline) | ![training](https://via.placeholder.com/640x360/0f172a/dc2626?text=Training+Progress) |
+
+---
+
+<h2 id="english">English</h2>
+
+### Overview
+
+This project demonstrates a complete machine learning workflow:
+
+- **Feature extraction** with `librosa` (MFCC, chroma, spectral features)
+- **Classification** with `scikit-learn` Random Forest
+- **Web API** via Flask
+- **Interactive UI** with WaveSurfer waveform + instrument timeline
+
+It is designed as a compact, explainable ML demo rather than a production-grade music analysis system.
+
+### Features
+
+- Upload audio: `WAV`, `MP3`, `FLAC`, `OGG`, `M4A`
+- Waveform playback
+- Full-track instrument probability distribution
+- Top prediction with confidence bars
+- Sliding-window timeline analysis — one row per instrument
+
+### Project Structure
+
+```text
+audio-app/
+  index.html          # Frontend page
+  script.js           # Frontend logic & API calls
+  style.css           # Styles
+  features.py         # Shared feature extraction & constants
+  timbre_api.py       # Flask app + inference endpoints
+  train_model.py      # Model training script
+  timbre_model.pkl    # Pre-trained model (~84MB, included)
+  run.bat             # Windows one-click launcher
+  dataset/            # Training data (download separately)
+  features_cache/     # Feature cache (auto-generated)
+  README.md
+```
+
+### Quick Start
+
+```bash
+# 1. Install dependencies
+pip install flask flask-cors joblib librosa numpy scikit-learn
+
+# 2. Start the server
+python timbre_api.py
+# Or double-click: run.bat
+
+# 3. Open browser → http://127.0.0.1:5000
+```
+
+Upload an audio file and click "开始识别" (Start Recognition).
+
+### API Endpoints
+
+| Path | Method | Description |
+|------|--------|-------------|
+| `/` | GET | Frontend page |
+| `/health` | GET | Model status & config |
+| `/analyze` | POST | Full-track prediction |
+| `/analyze_timeline` | POST | Sliding-window timeline |
+
+### Training
+
+The pre-trained model (`timbre_model.pkl`) uses 6 instrument classes (Clarinet, Flute, Acoustic Guitar, Piano, Trumpet, Violin) with 76-dim features, achieving ~70% test accuracy.
+
+```bash
+# Quick training (~1-3 min)
+python train_model.py --quick
+
+# Full training (~10-20 min)
+python train_model.py
+```
+
+### Dataset
+
+This project uses the [IRMAS](https://www.upf.edu/web/mtg/irmas) dataset. Download `IRMAS-TrainingData.zip` and place it in `dataset/`:
+
+```
+dataset/
+  cel/  cla/  flu/  gac/  gel/  org/
+  pia/  sax/  tru/  vio/  voi/
+```
+
+---
+
+<h2 id="中文">中文</h2>
+
+### 项目概述
 
 上传音频后，系统会使用训练好的 `scikit-learn` 模型进行推理，并展示：
 
@@ -8,27 +116,17 @@
 - Top 预测乐器
 - 基于滑动时间窗的乐器活动时间轴
 
-## 项目功能
+本项目将 `librosa` 特征提取、`scikit-learn` 随机森林分类、`Flask` 后端和浏览器前端组合在一起，更适合作为紧凑、可解释的 ML Demo，而不是工业级音乐分析系统。
 
-本项目将以下几个部分组合在一起：
+### 功能特性
 
-- 使用 `librosa` 提取音频特征
-- 使用 `scikit-learn` 进行传统机器学习分类
-- 使用 `Flask` 提供本地推理接口
-- 使用浏览器页面展示波形、概率结果和时间轴
+- 支持上传：`WAV`、`MP3`、`FLAC`、`OGG`、`M4A`
+- WaveSurfer 波形播放
+- 整段音频乐器分类概率
+- Top 预测和各类别置信度条
+- 滑动时间窗分段分析 + 逐乐器时间轴
 
-它更适合作为一个紧凑、可解释的机器学习 Demo，而不是一个工业级音乐分析系统。
-
-## 功能特性
-
-- 支持上传音频文件：`WAV`、`MP3`、`FLAC`、`OGG`、`M4A`
-- 支持波形播放
-- 对整段音频输出乐器分类概率
-- 显示 Top 预测和各类别置信度条
-- 对音频按滑动时间窗进行分段分析
-- 在波形下方绘制逐乐器时间轴
-
-## 项目结构
+### 项目结构
 
 ```text
 audio-app/
@@ -38,239 +136,90 @@ audio-app/
   features.py         # 共享特征提取逻辑与常量配置
   timbre_api.py       # Flask 应用、静态文件服务、推理接口
   train_model.py      # 模型训练脚本
-  timbre_model.pkl    # 训练好的模型文件（仓库已包含）
-  run.bat             # Windows 启动脚本
-  dataset/            # 训练数据（需手动下载，见下方说明）
-  features_cache/     # 训练阶段缓存的特征文件（自动生成）
-  README.md
+  timbre_model.pkl    # 预训练模型（~84MB，仓库已包含）
+  run.bat             # Windows 一键启动脚本
+  dataset/            # 训练数据（需手动下载）
+  features_cache/     # 特征缓存（训练时自动生成）
 ```
 
-## 代码架构
-
-### 1. 前端
-
-文件：
-
-- [index.html](index.html)
-- [script.js](script.js)
-- [style.css](style.css)
-
-职责：
-
-- 文件上传与拖拽
-- WaveSurfer 波形播放
-- 调用后端接口
-- 渲染整段音频的分类结果
-- 渲染乐器时间轴
-
-主流程：
-
-1. 用户上传音频文件
-2. 前端将文件发送到 `/analyze` 和 `/analyze_timeline`
-3. 前端渲染：
-   - 整段预测摘要
-   - 概率条
-   - 时间轴行与片段块
-
-### 2. 后端 API
-
-文件：
-
-- [timbre_api.py](timbre_api.py)
-
-职责：
-
-- 在 `http://127.0.0.1:5000` 提供前端页面
-- 从 `timbre_model.pkl` 加载训练好的模型
-- 校验上传文件
-- 执行整段音频推理
-- 执行滑动时间窗分段推理
-- 返回前端可直接使用的 JSON 结构
-
-路由：
-
-- `GET /`：前端页面
-- `GET /health`：模型与配置状态
-- `POST /analyze`：整段音频预测
-- `POST /analyze_timeline`：时间轴预测
-
-### 3. 特征提取模块
-
-文件：
-
-- [features.py](features.py)
-
-职责：
-
-- 提供可复用的特征提取函数
-- 保持训练阶段与推理阶段的特征一致
-- 维护共享常量，例如：
-  - 乐器显示名称
-  - 颜色配置
-  - 时间轴窗口参数
-
-当前代码支持的特征版本：
-
-- `40` 维：MFCC 均值 + 标准差
-- `76` 维：MFCC + Chroma + 频谱特征
-- `77` 维：包含 tempo / HPSS 的旧版本特征
-
-后端会根据模型实际输入维度自动选择对应的提取器。
-
-### 4. 训练流程
-
-文件：
-
-- [train_model.py](train_model.py)
-
-职责：
-
-- 从 `dataset/` 自动发现类别
-- 提取并缓存特征
-- 划分训练集与测试集
-- 执行交叉验证
-- 训练 `StandardScaler + RandomForestClassifier`
-- 将最终模型保存为 `timbre_model.pkl`
-
-训练模式：
-
-- 快速模式：`python train_model.py --quick`
-- 完整模式：`python train_model.py`
-- 强制重新提取特征：`python train_model.py --force-extract`
-
-## 推理流程
-
-### 整段音频推理
-
-接口：`POST /analyze`
-
-流程：
-
-1. 临时保存上传文件
-2. 提取整段音频特征
-3. 调用模型预测
-4. 返回按置信度排序的类别概率
-
-示例返回：
-
-```json
-{
-  "results": [
-    {"label": "pia", "confidence": 0.82},
-    {"label": "vio", "confidence": 0.11}
-  ],
-  "top_prediction": {"label": "pia", "confidence": 0.82},
-  "labels": ["cla", "flu", "gac", "pia", "tru", "vio"],
-  "model_info": {
-    "n_features": 76,
-    "test_accuracy": 0.70
-  }
-}
-```
-
-### 时间轴推理
-
-接口：`POST /analyze_timeline`
-
-流程：
-
-1. 读取整段音频
-2. 按滑动时间窗切分
-3. 对每个时间窗提取特征
-4. 对每个时间窗预测 top-k 候选类别
-5. 合并相邻的兼容片段
-6. 返回前端可直接渲染的时间轴 JSON
-
-默认时间轴参数定义在 `features.py` 中。
-
-示例返回：
-
-```json
-{
-  "segments": [
-    {
-      "start": 0.0,
-      "end": 1.5,
-      "predictions": [
-        {"label": "pia", "confidence": 0.81},
-        {"label": "vio", "confidence": 0.22}
-      ]
-    }
-  ],
-  "labels": ["cla", "flu", "gac", "pia", "tru", "vio"],
-  "duration": 3.0,
-  "window_size": 1.0,
-  "hop_size": 0.5
-}
-```
-
-## 本地运行
-
-### 方式一
+### 快速开始
 
 ```bash
-python timbre_api.py
-```
-
-### 方式二
-
-双击：
-
-```text
-run.bat
-```
-
-然后打开：
-
-```text
-http://127.0.0.1:5000
-```
-
-## 依赖安装
-
-```bash
+# 1. 安装依赖
 pip install flask flask-cors joblib librosa numpy scikit-learn
+
+# 2. 启动服务
+python timbre_api.py
+# 或双击 run.bat
+
+# 3. 浏览器访问 http://127.0.0.1:5000
 ```
 
-## 数据集
+上传音频文件，点击「开始识别」即可。
 
-本项目使用 [IRMAS](https://www.upf.edu/web/mtg/irmas)（Instrument Recognition in Musical Audio Signals）数据集进行训练。
+### API 接口
 
-### 获取数据集
+| 路径 | 方法 | 说明 |
+|------|------|------|
+| `/` | GET | 前端页面 |
+| `/health` | GET | 模型与配置状态 |
+| `/analyze` | POST | 整段音频预测 |
+| `/analyze_timeline` | POST | 时间轴预测 |
 
-1. 访问 [IRMAS 数据集页面](https://www.upf.edu/web/mtg/irmas)
-2. 下载 `IRMAS-TrainingData.zip`，解压后按乐器类别放入 `dataset/` 目录
+### 代码架构
 
-### 目录结构
+**前端** — `index.html` + `script.js` + `style.css`
+- 文件上传与拖拽、WaveSurfer 波形播放、API 调用、结果渲染、时间轴渲染
+
+**后端** — `timbre_api.py`
+- 加载模型、校验文件、整段推理、滑动时间窗推理、返回 JSON
+
+**特征提取** — `features.py`
+- 提供 40/76/77 维三种提取器，后端根据模型维度自动匹配
+- 维护共享常量：显示名称、颜色、窗口参数
+
+**训练** — `train_model.py`
+- 自动发现类别、缓存特征、交叉验证、训练 Random Forest
+- 快速模式：`--quick`（减少树数量和 CV 折数）
+
+### 数据集
+
+使用 [IRMAS](https://www.upf.edu/web/mtg/irmas) 数据集，下载 `IRMAS-TrainingData.zip` 解压到 `dataset/`：
 
 ```
 dataset/
-  cel/      # Cello — 大提琴
-  cla/      # Clarinet — 单簧管
-  flu/      # Flute — 长笛
-  gac/      # Guitar (Acoustic) — 原声吉他
-  gel/      # Guitar (Electric) — 电吉他
-  org/      # Organ — 管风琴
-  pia/      # Piano — 钢琴
-  sax/      # Saxophone — 萨克斯
-  tru/      # Trumpet — 小号
-  vio/      # Violin — 小提琴
-  voi/      # Voice — 人声
+  cel/   大提琴      cla/   单簧管
+  flu/   长笛        gac/   原声吉他
+  gel/   电吉他      org/   管风琴
+  pia/   钢琴        sax/   萨克斯
+  tru/   小号        vio/   小提琴
+  voi/   人声
 ```
-
-### 重新训练
 
 ```bash
 # 仓库已包含预训练模型，可直接使用
-# 如需自行训练，先放置数据集再运行：
+# 如需自行训练：
 python train_model.py --quick
 ```
 
-> 训练完成后会生成 `features_cache/` 和新的 `timbre_model.pkl`。
+### 技术栈
 
-## 说明
+| 层 | 技术 |
+|----|------|
+| 音频特征 | Python, librosa |
+| 机器学习 | scikit-learn (Random Forest + StandardScaler) |
+| 后端 | Flask |
+| 前端 | HTML5, CSS3, JavaScript, WaveSurfer |
 
-- 当前系统更适合理解为“主导乐器识别 + 近似多候选时间轴展示”
-- 时间轴结果基于滑动时间窗推理，不是真正的逐帧多标签源分析
-- 最终效果会受到数据集覆盖范围、标签质量和录音条件影响
+### 说明
 
+- 当前系统更适合理解为"主导乐器识别 + 近似多候选时间轴展示"
+- 时间轴基于滑动时间窗推理，不是真正的逐帧多标签源分离
+- 同一窗口内多种乐器同时发声时，模型只能以概率分布近似表达
+- 最终效果受数据集覆盖范围、标签质量和录音条件影响
+
+---
+
+<p align="center">
+  <sub>Built with Python · librosa · scikit-learn · Flask · WaveSurfer</sub>
+</p>
