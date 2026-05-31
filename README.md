@@ -9,12 +9,10 @@ A lightweight machine learning demo for musical instrument classification with t
 
 ## Screenshots · 截图
 
-| | |
-|---|---|
-| **Home Page · 主页** | **Recognition Result · 识别结果** |
-| ![home](https://github.com/user-attachments/assets/08dd3a04-ac7e-49e9-8076-d38b3bed9c88) | ![result](https://github.com/user-attachments/assets/3feb5182-85c9-4ec8-a1a4-15e23e139c7d) |
-| **Instrument Timeline · 乐器时间轴** | **Training · 训练过程** *(coming soon)* |
-| ![timeline](https://github.com/user-attachments/assets/9d9aeb18-339a-4a5d-bbcf-4f4a491b569b) | ![training](https://via.placeholder.com/640x360/0f172a/dc2626?text=Training+Progress) |
+| | | |
+|---|---|---|
+| **Home Page · 主页** | **Recognition Result · 识别结果** | **Instrument Timeline · 乐器时间轴** |
+| ![home](https://github.com/user-attachments/assets/08dd3a04-ac7e-49e9-8076-d38b3bed9c88) | ![result](https://github.com/user-attachments/assets/3feb5182-85c9-4ec8-a1a4-15e23e139c7d) | ![timeline](https://github.com/user-attachments/assets/9d9aeb18-339a-4a5d-bbcf-4f4a491b569b) |
 
 ---
 
